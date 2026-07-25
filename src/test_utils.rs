@@ -1,54 +1,34 @@
 #[macro_export]
-macro_rules! unary_cases {
+macro_rules! test_impls {
     (
-        $module:ident,
-        $func:path,
-
-        $(
-            $case_name:ident : ($input:expr, $expected:expr)
-        ),+ $(,)?
+        types { $input_ty:ty => $output_ty:ty }
+        cases $cases:tt
+        impls {
+            $( $impl_name:ident => $func:path ),+ $(,)?
+        }
     ) => {
-        mod $module {
+        $(
+            $crate::test_impls!(@impl $impl_name, $func, $input_ty, $output_ty, $cases);
+        )+
+    };
+
+    (@impl
+        $impl_name:ident, $func:path, $input_ty:ty, $output_ty:ty,
+        { $( $case_name:ident : ($input:expr, $expected:expr) ),+ $(,)? }
+    ) => {
+        mod $impl_name {
             use super::*;
 
             #[rstest::rstest]
             $(
-                #[case::$case_name($input, $expected)]
+                #[case($input, $expected)]
             )+
             fn cases(
-                #[case] input: Vec<i32>,
-                #[case] expected: i32,
+                #[case] input: $input_ty,
+                #[case] expected: $output_ty,
             ) {
                 assert_eq!($func(input), expected);
             }
         }
-    };
-}
-
-#[macro_export]
-macro_rules! test_impls {
-    (
-        cases {
-            $(
-                $case_name:ident : ($input:expr, $expected:expr)
-            ),+ $(,)?
-        }
-
-        impls {
-            $(
-                $impl_name:ident => $func:path
-            ),+ $(,)?
-        }
-    ) => {
-        $(
-            unary_cases!(
-                $impl_name,
-                $func,
-
-                $(
-                    $case_name : ($input, $expected)
-                ),+
-            );
-        )+
     };
 }
