@@ -1,5 +1,5 @@
 #[macro_export]
-macro_rules! test_impls {
+macro_rules! test_solution_variants {
     (
         fn $params:tt -> $out_ty:ty;
 
@@ -10,7 +10,7 @@ macro_rules! test_impls {
         }
     ) => {
         $(
-            $crate::test_impls_one! {
+            $crate::test_solution_variant_case! {
                 fn $params -> $out_ty;
                 cases $cases
                 impl $impl_name => $func
@@ -20,7 +20,7 @@ macro_rules! test_impls {
 }
 
 #[macro_export]
-macro_rules! test_impls_one {
+macro_rules! test_solution_variant_case {
     (
         fn ($($pname:ident : $pty:ty),+ $(,)?) -> $out_ty:ty;
         cases {

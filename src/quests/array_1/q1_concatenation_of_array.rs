@@ -16,9 +16,9 @@ impl Solution {
 #[cfg(test)]
 mod tests {
     use super::*;
-    use crate::test_impls;
+    use crate::test_solution_variants;
 
-    test_impls! {
+    test_solution_variants! {
         fn(nums: Vec<i32>) -> Vec<i32>;
 
         cases {
