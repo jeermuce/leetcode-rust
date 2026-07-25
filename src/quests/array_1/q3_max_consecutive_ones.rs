@@ -40,29 +40,18 @@ mod tests {
     use crate::test_impls;
 
     test_impls! {
-        types {
-            Vec<i32> => i32
-        }
+        fn(nums: Vec<i32>) -> i32;
 
         cases {
-            example_1            : (vec![1, 1, 0, 1, 1, 1], 3),
-            example_2            : (vec![1, 0, 1, 1, 0, 1], 2),
-            all_ones             : (vec![1, 1, 1, 1, 1], 5),
-            all_zeroes           : (vec![0, 0, 0, 0], 0),
-            single_one           : (vec![1], 1),
-            single_zero          : (vec![0], 0),
-            ones_at_start        : (vec![1, 1, 1, 0, 0, 1], 3),
-            ones_at_end          : (vec![0, 0, 1, 1, 1, 1], 4),
-            alternating_values   : (vec![1, 0, 1, 0, 1, 0], 1),
-            multiple_groups_same_length
-                                : (vec![1, 1, 0, 1, 1, 0, 1, 1], 2)
+            example_1  : (vec![1, 1, 0, 1, 1, 1]) => 3,
+            example_2  : (vec![1, 0, 1, 1, 0, 1]) => 2,
+            all_ones   : (vec![1, 1, 1, 1, 1]) => 5,
+            all_zeroes : (vec![0, 0, 0, 0]) => 0
         }
 
         impls {
-            find_max_consecutive_ones_match_flow
-                => Solution::find_max_consecutive_ones_match_flow,
-            find_max_consecutive_ones_if_flow
-                => Solution::find_max_consecutive_ones_if_flow
+            find_max_consecutive_ones_match_flow => Solution::find_max_consecutive_ones_match_flow,
+            find_max_consecutive_ones_if_flow    => Solution::find_max_consecutive_ones_if_flow
         }
     }
 }

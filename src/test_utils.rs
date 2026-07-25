@@ -1,33 +1,45 @@
 #[macro_export]
 macro_rules! test_impls {
     (
-        types { $input_ty:ty => $output_ty:ty }
+        fn $params:tt -> $out_ty:ty;
+
         cases $cases:tt
+
         impls {
             $( $impl_name:ident => $func:path ),+ $(,)?
         }
     ) => {
         $(
-            $crate::test_impls!(@impl $impl_name, $func, $input_ty, $output_ty, $cases);
+            $crate::test_impls_one! {
+                fn $params -> $out_ty;
+                cases $cases
+                impl $impl_name => $func
+            }
         )+
     };
+}
 
-    (@impl
-        $impl_name:ident, $func:path, $input_ty:ty, $output_ty:ty,
-        { $( $case_name:ident : ($input:expr, $expected:expr) ),+ $(,)? }
+#[macro_export]
+macro_rules! test_impls_one {
+    (
+        fn ($($pname:ident : $pty:ty),+ $(,)?) -> $out_ty:ty;
+        cases {
+            $( $case_name:ident : ( $($input:expr),+ $(,)? ) => $expected:expr ),+ $(,)?
+        }
+        impl $impl_name:ident => $func:path
     ) => {
         mod $impl_name {
             use super::*;
 
             #[rstest::rstest]
             $(
-                #[case($input, $expected)]
+                #[case::$case_name($($input),+, $expected)]
             )+
             fn cases(
-                #[case] input: $input_ty,
-                #[case] expected: $output_ty,
+                $(#[case] $pname: $pty,)+
+                #[case] expected: $out_ty,
             ) {
-                assert_eq!($func(input), expected);
+                assert_eq!($func($($pname),+), expected);
             }
         }
     };

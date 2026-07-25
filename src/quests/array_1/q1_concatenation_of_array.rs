@@ -19,16 +19,14 @@ mod tests {
     use crate::test_impls;
 
     test_impls! {
-        types {
-            Vec<i32> => Vec<i32>
-        }
+        fn(nums: Vec<i32>) -> Vec<i32>;
 
         cases {
-            example_1 : (vec![1, 2, 1], vec![1, 2, 1, 1, 2, 1]),
-            example_2 : (vec![1, 3, 2, 1], vec![1, 3, 2, 1, 1, 3, 2, 1]),
-            single    : (vec![7], vec![7, 7]),
-            repeated  : (vec![5, 5, 5], vec![5, 5, 5, 5, 5, 5]),
-            max_vals  : (vec![1000, 1000], vec![1000, 1000, 1000, 1000])
+            example_1 : (vec![1, 2, 1]) => vec![1, 2, 1, 1, 2, 1],
+            example_2 : (vec![1, 3, 2, 1]) => vec![1, 3, 2, 1, 1, 3, 2, 1],
+            single    : (vec![7]) => vec![7, 7],
+            repeated  : (vec![5, 5, 5]) => vec![5, 5, 5, 5, 5, 5],
+            max_vals  : (vec![1000, 1000]) => vec![1000, 1000, 1000, 1000]
         }
 
         impls {
