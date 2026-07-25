@@ -1,6 +1,40 @@
 pub struct Solution;
 
+enum Binarium {
+    One,
+    Zero,
+}
+
+impl From<&i32> for Binarium {
+    fn from(num: &i32) -> Self {
+        if *num == 0 {
+            Binarium::Zero
+        } else {
+            Binarium::One
+        }
+    }
+}
+
 impl Solution {
+    pub fn find_max_consecutive_ones_match_enum(nums: Vec<i32>) -> i32 {
+        let mut curr = 0;
+        let mut max_count = 0;
+
+        for num in nums
+            .iter()
+            .map(Binarium::from)
+        {
+            match num {
+                Binarium::Zero => curr = 0,
+                Binarium::One => {
+                    curr += 1;
+                    max_count = max_count.max(curr);
+                }
+            }
+        }
+        max_count
+    }
+
     pub fn find_max_consecutive_ones_match_flow(nums: Vec<i32>) -> i32 {
         let mut curr = 0;
         let mut max_count = 0;
@@ -51,7 +85,8 @@ mod tests {
 
         impls {
             find_max_consecutive_ones_match_flow => Solution::find_max_consecutive_ones_match_flow,
-            find_max_consecutive_ones_if_flow    => Solution::find_max_consecutive_ones_if_flow
+            find_max_consecutive_ones_if_flow    => Solution::find_max_consecutive_ones_if_flow,
+            find_max_consecutive_ones_match_enum    => Solution::find_max_consecutive_ones_match_enum
         }
     }
 }
