@@ -36,203 +36,43 @@ impl Solution {
 
 #[cfg(test)]
 mod tests {
+    use rstest::rstest;
+
     use super::*;
-
-    fn test_example_1<F>(f: F)
-    where
-        F: Fn(Vec<i32>) -> i32,
-    {
-        let nums = vec![
-            1, 1, 0, 1, 1, 1,
-        ];
-        assert_eq!(
-            f(nums),
-            3
-        );
-    }
-
-    fn test_example_2<F>(f: F)
-    where
-        F: Fn(Vec<i32>) -> i32,
-    {
-        let nums = vec![
-            1, 0, 1, 1, 0, 1,
-        ];
-        assert_eq!(
-            f(nums),
-            2
-        );
-    }
-
-    fn test_all_ones<F>(f: F)
-    where
-        F: Fn(Vec<i32>) -> i32,
-    {
-        let nums = vec![
-            1, 1, 1, 1, 1,
-        ];
-        assert_eq!(
-            f(nums),
-            5
-        );
-    }
-
-    fn test_all_zeroes<F>(f: F)
-    where
-        F: Fn(Vec<i32>) -> i32,
-    {
-        let nums = vec![
-            0, 0, 0, 0,
-        ];
-        assert_eq!(
-            f(nums),
-            0
-        );
-    }
-
-    fn test_single_one<F>(f: F)
-    where
-        F: Fn(Vec<i32>) -> i32,
-    {
-        let nums = vec![1];
-        assert_eq!(
-            f(nums),
-            1
-        );
-    }
-
-    fn test_single_zero<F>(f: F)
-    where
-        F: Fn(Vec<i32>) -> i32,
-    {
-        let nums = vec![0];
-        assert_eq!(
-            f(nums),
-            0
-        );
-    }
-
-    fn test_ones_at_start<F>(f: F)
-    where
-        F: Fn(Vec<i32>) -> i32,
-    {
-        let nums = vec![
-            1, 1, 1, 0, 0, 1,
-        ];
-        assert_eq!(
-            f(nums),
-            3
-        );
-    }
-
-    fn test_ones_at_end<F>(f: F)
-    where
-        F: Fn(Vec<i32>) -> i32,
-    {
-        let nums = vec![
-            0, 0, 1, 1, 1, 1,
-        ];
-        assert_eq!(
-            f(nums),
-            4
-        );
-    }
-
-    fn test_alternating_values<F>(f: F)
-    where
-        F: Fn(Vec<i32>) -> i32,
-    {
-        let nums = vec![
-            1, 0, 1, 0, 1, 0,
-        ];
-        assert_eq!(
-            f(nums),
-            1
-        );
-    }
-
-    fn test_multiple_groups_same_length<F>(f: F)
-    where
-        F: Fn(Vec<i32>) -> i32,
-    {
-        let nums = vec![
-            1, 1, 0, 1, 1, 0, 1, 1,
-        ];
-        assert_eq!(
-            f(nums),
-            2
-        );
-    }
-
-    fn test_large_input<F>(f: F)
-    where
-        F: Fn(Vec<i32>) -> i32,
-    {
-        let nums = vec![1; 100_000];
-        assert_eq!(
-            f(nums),
-            100_000
-        );
-    }
 
     macro_rules! implementation_tests {
         ($module:ident, $func:path) => {
             mod $module {
                 use super::*;
 
-                #[test]
-                fn example_1() {
-                    test_example_1($func);
-                }
-
-                #[test]
-                fn example_2() {
-                    test_example_2($func);
-                }
-
-                #[test]
-                fn all_ones() {
-                    test_all_ones($func);
-                }
-
-                #[test]
-                fn all_zeroes() {
-                    test_all_zeroes($func);
-                }
-
-                #[test]
-                fn single_one() {
-                    test_single_one($func);
-                }
-
-                #[test]
-                fn single_zero() {
-                    test_single_zero($func);
-                }
-
-                #[test]
-                fn ones_at_start() {
-                    test_ones_at_start($func);
-                }
-
-                #[test]
-                fn ones_at_end() {
-                    test_ones_at_end($func);
-                }
-
-                #[test]
-                fn alternating_values() {
-                    test_alternating_values($func);
-                }
-
-                #[test]
-                fn multiple_groups_same_length() {
-                    test_multiple_groups_same_length($func);
+                #[rstest]
+                #[case::example_1(vec![1, 1, 0, 1, 1, 1], 3)]
+                #[case::example_2(vec![1, 0, 1, 1, 0, 1], 2)]
+                #[case::all_ones(vec![1, 1, 1, 1, 1], 5)]
+                #[case::all_zeroes(vec![0, 0, 0, 0], 0)]
+                #[case::single_one(vec![1], 1)]
+                #[case::single_zero(vec![0], 0)]
+                #[case::ones_at_start(vec![1, 1, 1, 0, 0, 1], 3)]
+                #[case::ones_at_end(vec![0, 0, 1, 1, 1, 1], 4)]
+                #[case::alternating_values(vec![1, 0, 1, 0, 1, 0], 1)]
+                #[case::multiple_groups_same_length(
+                            vec![1, 1, 0, 1, 1, 0, 1, 1],
+                            2
+                        )]
+                fn cases(#[case] nums: Vec<i32>, #[case] expected: i32) {
+                    assert_eq!(
+                        $func(nums),
+                        expected
+                    );
                 }
 
                 #[test]
                 fn large_input() {
-                    test_large_input($func);
+                    let nums = vec![1; 100_000];
+                    assert_eq!(
+                        $func(nums),
+                        100_000
+                    );
                 }
             }
         };
