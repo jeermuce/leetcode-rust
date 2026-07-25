@@ -44,3 +44,55 @@ macro_rules! test_solution_variant_case {
         }
     };
 }
+
+#[macro_export]
+macro_rules! test_solution_variants_with {
+    (
+        fn $params:tt -> $out_ty:ty;
+
+        cases $cases:tt
+
+        assert $assertion:expr;
+
+        impls {
+            $( $impl_name:ident => $func:path ),+ $(,)?
+        }
+    ) => {
+        $(
+            $crate::test_solution_variant_case_with! {
+                fn $params -> $out_ty;
+                cases $cases
+                assert $assertion;
+                impl $impl_name => $func
+            }
+        )+
+    };
+}
+
+#[macro_export]
+macro_rules! test_solution_variant_case_with {
+    (
+        fn ($($pname:ident : $pty:ty),+ $(,)?) -> $out_ty:ty;
+        cases {
+            $( $case_name:ident : ( $($input:expr),+ $(,)? ) => $expected:expr ),+ $(,)?
+        }
+        assert $assertion:expr;
+        impl $impl_name:ident => $func:path
+    ) => {
+        mod $impl_name {
+            use super::*;
+
+            #[rstest::rstest]
+            $(
+                #[case::$case_name($($input),+, $expected)]
+            )+
+            fn cases(
+                $(#[case] $pname: $pty,)+
+                #[case] expected: $out_ty,
+            ) {
+                let actual = $func($($pname),+);
+                ($assertion)(actual, expected);
+            }
+        }
+    };
+}
