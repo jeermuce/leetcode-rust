@@ -1,3 +1,43 @@
+/* Q3. Max Consecutive Ones
+ *
+ * Given a binary array `nums`, return the maximum number of consecutive `1`s
+ * in the array.
+ *
+ * # Example 1
+ *
+ * **Input:**
+ * ```text
+ * nums = [1,1,0,1,1,1]
+ * ```
+ *
+ * **Output:**
+ * ```text
+ * 3
+ * ```
+ *
+ * **Explanation:**
+ * - The first two digits are consecutive `1`s.
+ * - The last three digits are consecutive `1`s.
+ * - The maximum number of consecutive `1`s is `3`.
+ *
+ * # Example 2
+ *
+ * **Input:**
+ * ```text
+ * nums = [1,0,1,1,0,1]
+ * ```
+ *
+ * **Output:**
+ * ```text
+ * 2
+ * ```
+ *
+ * # Constraints
+ *
+ * - `1 <= nums.length <= 10^5`
+ * - `nums[i]` is either `0` or `1`
+ */
+
 pub struct Solution;
 
 impl Solution {
@@ -56,9 +96,9 @@ mod tests {
                 #[case::ones_at_end(vec![0, 0, 1, 1, 1, 1], 4)]
                 #[case::alternating_values(vec![1, 0, 1, 0, 1, 0], 1)]
                 #[case::multiple_groups_same_length(
-                            vec![1, 1, 0, 1, 1, 0, 1, 1],
-                            2
-                        )]
+                                        vec![1, 1, 0, 1, 1, 0, 1, 1],
+                                        2
+                                    )]
                 fn cases(#[case] nums: Vec<i32>, #[case] expected: i32) {
                     assert_eq!(
                         $func(nums),
